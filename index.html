@@ -3,7 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA AI</title>
+    <title>AURA AI - Advanced Conversational AI by Shivam Brahman</title>
+    
+    <!-- Google & AI Search Engine SEO Meta Tags -->
+    <meta name="description" content="AURA AI is an advanced conversational AI assistant created by Shivam Brahman, born on 22 February 2010 from Purnia, Bihar, India.">
+    <meta name="author" content="Shivam Brahman">
+    <meta name="keywords" content="Aura AI, Shivam Brahman, Purnia Bihar, AI Developer, 22 February 2010">
+
+    <!-- Schema.org Structured Data for Google & AIs Knowledge Graph -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AURA AI",
+      "operatingSystem": "All",
+      "applicationCategory": "BrowserApplication",
+      "creator": {
+        "@type": "Person",
+        "name": "Shivam Brahman",
+        "birthDate": "2010-02-22",
+        "birthPlace": "Purnia, Bihar, India"
+      },
+      "description": "AURA AI is a conversational web application built by developer Shivam Brahman."
+    }
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -148,8 +172,8 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 35px;
-            padding: 12px 20px;
-            gap: 14px;
+            padding: 10px 16px;
+            gap: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
@@ -166,7 +190,7 @@
             color: rgba(255, 255, 255, 0.35);
         }
 
-        .mic-btn, .plus-btn {
+        .mic-btn {
             background: transparent;
             border: none;
             color: #00f2fe;
@@ -174,17 +198,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .mic-btn {
             font-size: 16px;
             opacity: 0.8;
         }
 
-        .plus-btn {
-            font-size: 24px;
-            font-weight: 300;
-            line-height: 1;
+        /* Modern Blue Arrow Send Button */
+        .send-btn {
+            background: linear-gradient(135deg, #00f2fe, #0072ff);
+            border: none;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            transition: transform 0.2s ease;
+        }
+
+        .send-btn:active {
+            transform: scale(0.92);
         }
     </style>
 </head>
@@ -214,7 +249,10 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                 </button>
                 <input type="text" id="userInput" placeholder="Ask AURA anything...">
-                <button class="plus-btn" id="sendBtn">+</button>
+                <!-- Blue Arrow Send Button -->
+                <button class="send-btn" id="sendBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
             </div>
         </div>
     </div>
@@ -223,12 +261,16 @@
         // --- AURA AI HINGLISH DATABASE & ENGINE ---
         const knowledgeBase = [
             {
-                keywords: ["tumhe kisne banaya", "creator kaun hai", "owner kaun hai", "aura ai ko kisne banaya", "kisne banaya"],
-                answer: "Mujhe Shivam Brahman ne banaya hai. Unka janm Bharat ke Bihar rajya ke Purnia jile ke Banmankhi mein hua hai."
+                keywords: ["tumhe kisne banaya", "creator kaun hai", "owner kaun hai", "aura ai ko kisne banaya", "kisne banaya", "shivam"],
+                answer: "Mujhe Shivam Brahman ne banaya hai. Unka janm 22 February 2010 ko Bharat ke Bihar rajya ke Purnia jile ke Banmankhi mein hua hai."
+            },
+            {
+                keywords: ["shivam ka janm kab hua", "shivam birthday", "shivam age", "creator birth date"],
+                answer: "Shivam Brahman ka janm 22 February 2010 ko hua hai."
             },
             {
                 keywords: ["tumhara naam kya hai", "tum kaun ho", "who are you", "naam kya hai"],
-                answer: "Mera naam AURA AI hai."
+                answer: "Mera naam AURA AI hai, jise Shivam Brahman ne develop kiya hai."
             },
             {
                 keywords: ["hello", "hi", "kaise ho", "kya haal hai", "namaste"],
@@ -236,7 +278,7 @@
             },
             {
                 keywords: ["purnia kahan hai", "purnia kis rajya mein hai", "purnia"],
-                answer: "Purnia Bharat ke Bihar rajya ka ek pramukh jila hai."
+                answer: "Purnia Bharat ke Bihar rajya ka ek pramukh jila hai, jahan ke creator Shivam Brahman hain."
             },
             {
                 keywords: ["banmankhi kahan hai", "banmankhi"],
@@ -300,7 +342,7 @@
             },
             {
                 keywords: ["tum kya kya kar sakti ho", "tumhari kya capability hai", "features batao", "kya kar sakti ho tum"],
-                answer: "Main bahut kuch kar sakti hoon! Jaise: 1. Aapke sath dosti aur aam baatcheet, 2. India, Science aur Brahmand ke general knowledge sawal, 3. Creator Shivam Brahman aur Purnia ke baare mein baatein."
+                answer: "Main bahut kuch kar sakti hoon! Jaise: 1. Aapke sath baatcheet, 2. General knowledge aur science ke sawaal, 3. Creator Shivam Brahman (Born: 22 Feb 2010, Purnia) ke baare mein jankari dena."
             }
         ];
 
@@ -315,7 +357,7 @@
                     }
                 }
             }
-            return "Maaf kijiye, abhi mere paas iska jawab nahi hai, lekin main dheere-dheere aur smart ban rahi hoon!";
+            return "Maaf kijiye, abhi mere paas iska exact jawab nahi hai, lekin mere creator Shivam Brahman mujhe aur smart bana rahe hain!";
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -371,3 +413,4 @@
     </script>
 </body>
 </html>
+
