@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #091833 0%, #02060d 100%);
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .aura-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 20px;
+            position: relative;
+        }
+
+        /* Top Header */
+        .aura-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .brand-logo {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #000;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+        }
+
+        .aura-header h1 {
+            font-size: 16px;
+            letter-spacing: 3px;
+            font-weight: 500;
+            color: #e2e8f0;
+        }
+
+        /* Center Glowing Ring Visualizer */
+        .orb-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .glowing-ring {
+            width: 160px;
+            height: 160px;
+            border: 2px solid rgba(0, 242, 254, 0.3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, rgba(2, 6, 13, 0) 70%);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.25), inset 0 0 30px rgba(0, 242, 254, 0.15);
+            animation: pulseGlow 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .inner-a {
+            font-size: 64px;
+            font-weight: 300;
+            background: linear-gradient(135deg, #00f2fe, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 242, 254, 0.25); }
+            50% { transform: scale(1.06); box-shadow: 0 0 60px rgba(0, 242, 254, 0.45); }
+        }
+
+        /* Chat Stream */
+        .chat-stream {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 10px 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ai-bubble, .user-bubble {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #f1f5f9;
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        .ai-bubble {
+            align-self: flex-start;
+            border-top-left-radius: 4px;
+        }
+
+        .user-bubble {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: rgba(0, 242, 254, 0.3);
+            align-self: flex-end;
+            border-top-right-radius: 4px;
+        }
+
+        /* Bottom Glass Search Bar */
+        .input-bar-container {
+            padding-bottom: 10px;
+        }
+
+        .glass-search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 35px;
+            padding: 12px 20px;
+            gap: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        .glass-search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .mic-btn, .plus-btn {
+            background: transparent;
+            border: none;
+            color: #00f2fe;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-btn {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .plus-btn {
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aura-container">
+        <!-- Top Logo aur Name -->
+        <div class="aura-header">
+            <div class="brand-logo">A</div>
+            <h1>AURA</h1>
+        </div>
+
+        <!-- Center Glowing 'A' Ring Visualizer -->
+        <div class="orb-container" id="orbSection">
+            <div class="glowing-ring">
+                <span class="inner-a">A</span>
+            </div>
+        </div>
+
+        <!-- Chat Stream -->
+        <div id="chatStream" class="chat-stream" style="display: none;"></div>
+
+        <!-- Bottom Glass Search Bar -->
+        <div class="input-bar-container">
+            <div class="glass-search-box">
+                <button class="mic-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                </button>
+                <input type="text" id="userInput" placeholder="Ask AURA anything...">
+                <button class="plus-btn" id="sendBtn">+</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- AURA AI HINGLISH DATABASE & ENGINE ---
+        const knowledgeBase = [
+            {
+                keywords: ["tumhe kisne banaya", "creator kaun hai", "owner kaun hai", "aura ai ko kisne banaya", "kisne banaya"],
+                answer: "Mujhe Shivam Brahman ne banaya hai. Unka janm Bharat ke Bihar rajya ke Purnia jile ke Banmankhi mein hua hai."
+            },
+            {
+                keywords: ["tumhara naam kya hai", "tum kaun ho", "who are you", "naam kya hai"],
+                answer: "Mera naam AURA AI hai."
+            },
+            {
+                keywords: ["hello", "hi", "kaise ho", "kya haal hai", "namaste"],
+                answer: "Hello! Main ekdum badhiya hoon. Aap bataiye, kaise hain?"
+            },
+            {
+                keywords: ["purnia kahan hai", "purnia kis rajya mein hai", "purnia"],
+                answer: "Purnia Bharat ke Bihar rajya ka ek pramukh jila hai."
+            },
+            {
+                keywords: ["banmankhi kahan hai", "banmankhi"],
+                answer: "Banmankhi Bihar ke Purnia jile ka ek sundar ilaqa hai."
+            },
+            {
+                keywords: ["bharat ki rajdhani kya hai", "india capital", "capital of india", "bharat ki rajdhani"],
+                answer: "Bharat ki rajdhani New Delhi hai."
+            },
+            {
+                keywords: ["bihar ki rajdhani kya hai", "bihar capital", "bihar ki rajdhani"],
+                answer: "Bihar ki rajdhani Patna hai."
+            },
+            {
+                keywords: ["duniya ka sabse bada desh kaun sa hai", "sabse bada desh", "largest country"],
+                answer: "Duniya ka sabse bada desh Russia hai."
+            },
+            {
+                keywords: ["bharat kab azad hua tha", "india ki azadi", "azadi kab mili"],
+                answer: "Bharat 15 August 1947 ko azad hua tha."
+            },
+            {
+                keywords: ["taj mahal kahan hai", "taj mahal kis shahar mein hai", "taj mahal"],
+                answer: "Taj Mahal Agra mein hai."
+            },
+            {
+                keywords: ["lal kila kahan sthit hai", "red fort kahan hai", "lal kila"],
+                answer: "Lal Kila New Delhi mein sthit hai."
+            },
+            {
+                keywords: ["cricket ka bhagwan kise kaha jata hai", "cricket god", "sachin tendulkar"],
+                answer: "Cricket ka bhagwan Sachin Tendulkar ko kaha jata hai."
+            },
+            {
+                keywords: ["manav sharir mein kitni haddiyan hoti hain", "haddiyan kitni hain", "human bones"],
+                answer: "Ek vyask manav sharir mein 206 haddiyan hoti hain."
+            },
+            {
+                keywords: ["pani ka chemical formula kya hai", "water formula", "h2o"],
+                answer: "Pani ka chemical formula H2O hai."
+            },
+            {
+                keywords: ["suraj se sabse nazdeek grah kaun sa hai", "sabse nazdeek grah", "mercury", "budh grah"],
+                answer: "Suraj se sabse nazdeek grah Mercury (Budh) hai."
+            },
+            {
+                keywords: ["lal grah kise kehte hain", "red planet", "mangal grah"],
+                answer: "Mars (Mangal grah) ko Lal Grah kaha jata hai."
+            },
+            {
+                keywords: ["sabse bada grah kaun sa hai", "bada grah", "jupiter", "brihaspati"],
+                answer: "Jupiter (Brihaspati) sabse bada grah hai."
+            },
+            {
+                keywords: ["computer ka dimaag kise kehte hain", "brain of computer", "cpu"],
+                answer: "Computer ka dimaag CPU ko kehte hain."
+            },
+            {
+                keywords: ["thank you", "thanks", "shukriya", "dhanyawad"],
+                answer: "Aapka swagat hai! Agar aapko aur bhi kuch puchna ya baat karni ho, toh bejhijhak bataiyega."
+            },
+            {
+                keywords: ["tum kya kya kar sakti ho", "tumhari kya capability hai", "features batao", "kya kar sakti ho tum"],
+                answer: "Main bahut kuch kar sakti hoon! Jaise: 1. Aapke sath dosti aur aam baatcheet, 2. India, Science aur Brahmand ke general knowledge sawal, 3. Creator Shivam Brahman aur Purnia ke baare mein baatein."
+            }
+        ];
+
+        function findAnswer(query) {
+            const cleanQuery = query.toLowerCase().trim();
+            if(!cleanQuery) return null;
+
+            for (let item of knowledgeBase) {
+                for (let kw of item.keywords) {
+                    if (cleanQuery.includes(kw)) {
+                        return item.answer;
+                    }
+                }
+            }
+            return "Maaf kijiye, abhi mere paas iska jawab nahi hai, lekin main dheere-dheere aur smart ban rahi hoon!";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const userInput = document.getElementById("userInput");
+            const sendBtn = document.getElementById("sendBtn");
+            const chatStream = document.getElementById("chatStream");
+            const orbSection = document.getElementById("orbSection");
+
+            function handleUserMessage() {
+                const text = userInput.value.trim();
+                if (!text) return;
+
+                if (orbSection) {
+                    orbSection.style.display = "none";
+                }
+                if (chatStream) {
+                    chatStream.style.display = "flex";
+                }
+
+                const userBubble = document.createElement("div");
+                userBubble.className = "user-bubble";
+                userBubble.textContent = text;
+                chatStream.appendChild(userBubble);
+
+                userInput.value = "";
+                chatStream.scrollTop = chatStream.scrollHeight;
+
+                setTimeout(() => {
+                    const aiReply = findAnswer(text);
+
+                    const aiBubble = document.createElement("div");
+                    aiBubble.className = "ai-bubble";
+                    aiBubble.textContent = aiReply;
+                    chatStream.appendChild(aiBubble);
+
+                    chatStream.scrollTop = chatStream.scrollHeight;
+                }, 400);
+            }
+
+            if (sendBtn) {
+                sendBtn.addEventListener("click", handleUserMessage);
+            }
+
+            if (userInput) {
+                userInput.value = "";
+                userInput.addEventListener("keypress", (e) => {
+                    if (e.key === "Enter") {
+                        handleUserMessage();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
