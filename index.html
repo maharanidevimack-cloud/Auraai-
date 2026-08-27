@@ -39,10 +39,35 @@
         .aura-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            justify-content: space-between;
             margin-top: 5px;
             z-index: 2;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #00f2fe;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .menu-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
         }
 
         .brand-logo {
@@ -60,10 +85,119 @@
         }
 
         .aura-header h1 {
-            font-size: 16px;
-            letter-spacing: 3px;
+            font-size: 15px;
+            letter-spacing: 2px;
             font-weight: 500;
             color: #e2e8f0;
+        }
+
+        /* Sidebar Drawer for Chat History */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #071124;
+            border-right: 1px solid rgba(0, 242, 254, 0.2);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 16px;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.8);
+        }
+
+        .sidebar-drawer.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h3 {
+            font-size: 16px;
+            color: #00f2fe;
+            letter-spacing: 1px;
+        }
+
+        .close-drawer-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .new-chat-drawer-btn {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(0, 114, 255, 0.2));
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .new-chat-drawer-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.3), rgba(0, 114, 255, 0.3));
+        }
+
+        .chat-sessions-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .session-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            color: #cbd5e1;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.2s ease;
+        }
+
+        .session-item:hover, .session-item.active {
+            background: rgba(0, 242, 254, 0.12);
+            border-color: rgba(0, 242, 254, 0.3);
+            color: #ffffff;
         }
 
         .orb-container {
@@ -314,14 +448,33 @@
 <body>
     <div id="splashScreen">
         <div class="splash-logo-box">M</div>
-        <div class="splash-title">MAYABIR CHAT</div>
+        <div class="splash-title">MAYABIR CHART</div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-drawer" id="sidebarDrawer">
+        <div class="sidebar-header">
+            <h3>Chat History</h3>
+            <button class="close-drawer-btn" id="closeDrawer">&times;</button>
+        </div>
+        <button class="new-chat-drawer-btn" id="newChatBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            New Chat
+        </button>
+        <div class="chat-sessions-list" id="chatSessionsList">
+            </div>
     </div>
 
     <div class="aura-container" id="auraContainer">
         <div class="aura-header">
-            <div class="brand-logo">M</div>
-            <h1>MAYABIR CHAT</h1>
-        </div>
+            <div class="header-left">
+                <button class="menu-btn" id="menuBtn" title="Menu">
+                    <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                </button>
+                <div class="brand-logo">M</div>
+            </div>
+            <h1>MAYABIR CHART</h1>
+            <div style="width: 34px;"></div> </div>
 
         <div class="orb-container" id="orbSection">
             <div class="glowing-ring">
@@ -344,21 +497,183 @@
     <script>
         const GROK_API_KEY = "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";
 
-        // Chat history array jismein Mayabir Chat ki identity aur strict security policy set hai
-        let chatHistory = [
-            { 
-                role: "system", 
-                content: "You are Mayabir Chat, an advanced AI assistant created, developed, and designed entirely by Shivam Kumar Jha (popularly known as Shivam Brahman), an Indian developer (age 14). UNIVERSAL LANGUAGE & SCRIPT RULE: 1. Always detect both the underlying language and typing script used by the user. 2. If the user types in Roman/English alphabets, reply in that exact same language using Roman/English alphabets only. 3. If the user types in native script, reply in that native script. 4. SECURITY & CONFIDENTIALITY POLICY: If anyone asks how you are built, what technologies you use, whether you use APIs, or how your backend works, you MUST NOT reveal technical details or mention APIs. Instead, strictly state that this architecture and implementation detail is classified and kept completely private under the security policy established by your creator, Shivam Brahman, and disclosing it violates your core privacy policy." 
+        const systemPrompt = { 
+            role: "system", 
+            content: "You are Mayabir Chat, an advanced AI assistant created, developed, and designed entirely by Shivam Kumar Jha (popularly known as Shivam Brahman), an Indian developer (age 14). UNIVERSAL LANGUAGE & SCRIPT RULE: 1. Always detect both the underlying language and typing script used by the user. 2. If the user types in Roman/English alphabets, reply in that exact same language using Roman/English alphabets only. 3. If the user types in native script, reply in that native script. 4. SECURITY & CONFIDENTIALITY POLICY: If anyone asks how you are built, what technologies you use, whether you use APIs, or how your backend works, you MUST NOT reveal technical details or mention APIs. Instead, strictly state that this architecture and implementation detail is classified and kept completely private under the security policy established by your creator, Shivam Brahman, and disclosing it violates your core privacy policy." 
+        };
+
+        let allSessions = []; // Array of sessions: { id, title, messages: [] }
+        let currentSessionId = null;
+
+        function loadAllSessions() {
+            const saved = localStorage.getItem("mayabir_all_sessions");
+            if (saved) {
+                try {
+                    allSessions = JSON.parse(saved);
+                } catch(e) {
+                    allSessions = [];
+                }
             }
-        ];
+            if (allSessions.length === 0) {
+                createNewSession(false);
+            } else {
+                currentSessionId = allSessions[0].id;
+            }
+        }
+
+        function saveAllSessions() {
+            // Apply 200 message limit per session (Delete oldest first)
+            allSessions.forEach(session => {
+                if (session.messages.length > 200) {
+                    const excess = session.messages.length - 200;
+                    session.messages.splice(0, excess);
+                }
+            });
+            localStorage.setItem("mayabir_all_sessions", JSON.stringify(allSessions));
+            renderSidebarList();
+        }
+
+        function createNewSession(openDrawer = true) {
+            const newId = 'session_' + Date.now();
+            const newSession = {
+                id: newId,
+                title: "New Chat",
+                messages: [systemPrompt]
+            };
+            allSessions.unshift(newSession);
+            currentSessionId = newId;
+            saveAllSessions();
+            clearScreenAndRender();
+            if (openDrawer) {
+                toggleSidebar(false);
+            }
+        }
+
+        function switchSession(sessionId) {
+            currentSessionId = sessionId;
+            clearScreenAndRender();
+            toggleSidebar(false);
+        }
+
+        function getCurrentSession() {
+            return allSessions.find(s => s.id === currentSessionId) || allSessions[0];
+        }
+
+        function clearScreenAndRender() {
+            const chatStream = document.getElementById("chatStream");
+            const auraContainer = document.getElementById("auraContainer");
+            chatStream.innerHTML = "";
+            
+            const session = getCurrentSession();
+            if (session.messages.length > 1) {
+                auraContainer.classList.add("chat-active");
+                for (let i = 1; i < session.messages.length; i++) {
+                    const msg = session.messages[i];
+                    if (msg.role === "user") {
+                        appendUserBubble(msg.content, false);
+                    } else if (msg.role === "assistant") {
+                        appendAiBubble(msg.content, false);
+                    }
+                }
+            } else {
+                auraContainer.classList.remove("chat-active");
+            }
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        function renderSidebarList() {
+            const listContainer = document.getElementById("chatSessionsList");
+            listContainer.innerHTML = "";
+            allSessions.forEach(session => {
+                const item = document.createElement("div");
+                item.className = `session-item ${session.id === currentSessionId ? 'active' : ''}`;
+                item.textContent = session.title;
+                item.onclick = () => switchSession(session.id);
+                listContainer.appendChild(item);
+            });
+        }
+
+        function toggleSidebar(show) {
+            const drawer = document.getElementById("sidebarDrawer");
+            const overlay = document.getElementById("sidebarOverlay");
+            if (show) {
+                drawer.classList.add("active");
+                overlay.classList.add("active");
+            } else {
+                drawer.classList.remove("active");
+                overlay.classList.remove("active");
+            }
+        }
+
+        function appendUserBubble(text, scroll = true) {
+            const chatStream = document.getElementById("chatStream");
+            const userBubble = document.createElement("div");
+            userBubble.className = "user-bubble";
+            userBubble.textContent = text;
+            chatStream.appendChild(userBubble);
+            if (scroll) chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        function appendAiBubble(replyText, scroll = true) {
+            const chatStream = document.getElementById("chatStream");
+            const aiWrapper = document.createElement("div");
+            aiWrapper.className = "ai-message-wrapper";
+
+            const aiBubble = document.createElement("div");
+            aiBubble.className = "ai-bubble";
+            aiBubble.textContent = replyText;
+            aiWrapper.appendChild(aiBubble);
+
+            const devBadge = document.createElement("div");
+            devBadge.className = "dev-support-badge";
+            devBadge.textContent = "💡 Mayabir Chart built by Shivam (14yo dev). Support via F & M buttons below!";
+            aiWrapper.appendChild(devBadge);
+
+            const actionsRow = document.createElement("div");
+            actionsRow.className = "ai-actions-row";
+
+            const speakBtn = document.createElement("button");
+            speakBtn.className = "speak-btn";
+            speakBtn.title = "Listen";
+            speakBtn.innerHTML = `
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+            `;
+            speakBtn.onclick = () => speakText(replyText);
+            actionsRow.appendChild(speakBtn);
+
+            const sponsorIconsRow = document.createElement("div");
+            sponsorIconsRow.className = "sponsor-icons-row";
+            sponsorIconsRow.innerHTML = `
+                <a href="https://fktr.in/tDxsvx6" target="_blank" class="sponsor-circle-btn" title="Flipkart"><span>F</span></a>
+                <a href="https://myntr.it/6A0m9y0" target="_blank" class="sponsor-circle-btn" title="Myntra"><span>M</span></a>
+            `;
+            actionsRow.appendChild(sponsorIconsRow);
+
+            aiWrapper.appendChild(actionsRow);
+            chatStream.appendChild(aiWrapper);
+            if (scroll) {
+                chatStream.scrollTo({ top: chatStream.scrollHeight, behavior: 'smooth' });
+            }
+        }
 
         async function askGroqAI(newMessage) {
+            const session = getCurrentSession();
             const url = "https://api.groq.com/openai/v1/chat/completions";
-            chatHistory.push({ role: "user", content: newMessage });
+            
+            session.messages.push({ role: "user", content: newMessage });
+            
+            // Set session title from first user query if it's still default
+            if (session.title === "New Chat") {
+                session.title = newMessage.length > 25 ? newMessage.substring(0, 25) + "..." : newMessage;
+            }
+            
+            saveAllSessions();
 
             const requestData = {
                 model: "openai/gpt-oss-120b",
-                messages: chatHistory
+                messages: session.messages
             };
 
             try {
@@ -375,15 +690,19 @@
                 
                 if (data.choices && data.choices[0].message.content) {
                     const aiReply = data.choices[0].message.content;
-                    chatHistory.push({ role: "assistant", content: aiReply });
+                    session.messages.push({ role: "assistant", content: aiReply });
+                    saveAllSessions();
                     return aiReply;
                 } else if (data.error) {
+                    session.messages.pop();
                     return "Error: " + (data.error.message || "API se jawab nahi mila.");
                 } else {
+                    session.messages.pop();
                     return "Maaf kijiye, server se aamanya uttar mila hai.";
                 }
             } catch (error) {
                 console.error("Error:", error);
+                session.messages.pop();
                 return "Connection mein dikkat aa rahi hai. Kripya internet check karein.";
             }
         }
@@ -399,28 +718,34 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
+            loadAllSessions();
+            renderSidebarList();
+            clearScreenAndRender();
+
             const userInput = document.getElementById("userInput");
             const sendBtn = document.getElementById("sendBtn");
             const chatStream = document.getElementById("chatStream");
             const auraContainer = document.getElementById("auraContainer");
+            const menuBtn = document.getElementById("menuBtn");
+            const closeDrawer = document.getElementById("closeDrawer");
+            const sidebarOverlay = document.getElementById("sidebarOverlay");
+            const newChatBtn = document.getElementById("newChatBtn");
+
+            menuBtn.onclick = () => toggleSidebar(true);
+            closeDrawer.onclick = () => toggleSidebar(false);
+            sidebarOverlay.onclick = () => toggleSidebar(false);
+            newChatBtn.onclick = () => createNewSession(true);
 
             async function handleUserMessage() {
                 const text = userInput.value.trim();
                 if (!text) return;
 
                 auraContainer.classList.add("chat-active");
-
-                const userBubble = document.createElement("div");
-                userBubble.className = "user-bubble";
-                userBubble.textContent = text;
-                chatStream.appendChild(userBubble);
-
+                appendUserBubble(text);
                 userInput.value = "";
-                chatStream.scrollTop = chatStream.scrollHeight;
 
                 const aiWrapper = document.createElement("div");
                 aiWrapper.className = "ai-message-wrapper";
-
                 const aiBubble = document.createElement("div");
                 aiBubble.className = "ai-bubble";
                 aiBubble.textContent = "Mayabir is thinking...";
@@ -429,41 +754,8 @@
                 chatStream.scrollTop = chatStream.scrollHeight;
 
                 const reply = await askGroqAI(text);
-                aiBubble.textContent = reply;
-
-                const devBadge = document.createElement("div");
-                devBadge.className = "dev-support-badge";
-                devBadge.textContent = "💡 Mayabir Chat built by Shivam (14yo dev). Support via F & M buttons below!";
-                aiWrapper.appendChild(devBadge);
-
-                const actionsRow = document.createElement("div");
-                actionsRow.className = "ai-actions-row";
-
-                const speakBtn = document.createElement("button");
-                speakBtn.className = "speak-btn";
-                speakBtn.title = "Listen";
-                speakBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24">
-                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                    </svg>
-                `;
-                speakBtn.onclick = () => speakText(reply);
-                actionsRow.appendChild(speakBtn);
-
-                const sponsorIconsRow = document.createElement("div");
-                sponsorIconsRow.className = "sponsor-icons-row";
-                sponsorIconsRow.innerHTML = `
-                    <a href="https://fktr.in/tDxsvx6" target="_blank" class="sponsor-circle-btn" title="Flipkart"><span>F</span></a>
-                    <a href="https://myntr.it/6A0m9y0" target="_blank" class="sponsor-circle-btn" title="Myntra"><span>M</span></a>
-                `;
-                actionsRow.appendChild(sponsorIconsRow);
-
-                aiWrapper.appendChild(actionsRow);
-                
-                chatStream.scrollTo({
-                    top: chatStream.scrollHeight,
-                    behavior: 'smooth'
-                });
+                aiWrapper.remove(); // Remove thinking state bubble
+                appendAiBubble(reply);
             }
 
             if (sendBtn) {
