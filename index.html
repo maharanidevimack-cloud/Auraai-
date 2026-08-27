@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AURA AI - Powered by Shivam Brahman</title>
+    <title>Mayabir Chat - Powered by Shivam Brahman</title>
     
     <style>
         * {
@@ -312,19 +312,19 @@
 </head>
 <body>
     <div id="splashScreen">
-        <div class="splash-logo-box">A</div>
-        <div class="splash-title">AURA AI</div>
+        <div class="splash-logo-box">M</div>
+        <div class="splash-title">MAYABIR CHAT</div>
     </div>
 
     <div class="aura-container" id="auraContainer">
         <div class="aura-header">
-            <div class="brand-logo">A</div>
-            <h1>AURA</h1>
+            <div class="brand-logo">M</div>
+            <h1>MAYABIR CHAT</h1>
         </div>
 
         <div class="orb-container" id="orbSection">
             <div class="glowing-ring">
-                <span class="inner-a">A</span>
+                <span class="inner-a">M</span>
             </div>
         </div>
 
@@ -332,7 +332,7 @@
 
         <div class="input-bar-container">
             <div class="glass-search-box">
-                <input type="text" id="userInput" placeholder="Ask AURA anything...">
+                <input type="text" id="userInput" placeholder="Ask Mayabir Chat anything...">
                 <button class="send-btn" id="sendBtn">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
@@ -343,11 +343,11 @@
     <script>
         const GROK_API_KEY = "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";
 
-        // Chat history array jo user aur AI ki baatein yaad rakhega aur API ko bhejeiga
+        // Chat history array jismein Mayabir Chat ki identity aur strict security policy set hai
         let chatHistory = [
             { 
                 role: "system", 
-                content: "You are AURA AI, an advanced AI assistant created, developed, and designed entirely by Shivam Kumar Jha (popularly known as Shivam Brahman), an Indian developer (age 14). UNIVERSAL LANGUAGE & SCRIPT RULE: 1. Always detect both the underlying language and typing script used by the user. 2. If the user types in Roman/English alphabets, reply in that exact same language using Roman/English alphabets only. 3. If the user types in native script, reply in that native script." 
+                content: "You are Mayabir Chat, an advanced AI assistant created, developed, and designed entirely by Shivam Kumar Jha (popularly known as Shivam Brahman), an Indian developer (age 14). UNIVERSAL LANGUAGE & SCRIPT RULE: 1. Always detect both the underlying language and typing script used by the user. 2. If the user types in Roman/English alphabets, reply in that exact same language using Roman/English alphabets only. 3. If the user types in native script, reply in that native script. 4. SECURITY & CONFIDENTIALITY POLICY: If anyone asks how you are built, what technologies you use, whether you use APIs, or how your backend works, you MUST NOT reveal technical details or mention APIs. Instead, strictly state that this architecture and implementation detail is classified and kept completely private under the security policy established by your creator, Shivam Brahman, and disclosing it violates your core privacy policy." 
             }
         ];
 
@@ -357,7 +357,7 @@
 
             const requestData = {
                 model: "openai/gpt-oss-120b",
-                messages: chatHistory // Yeh poori chat history API ko bhej raha hai
+                messages: chatHistory
             };
 
             try {
@@ -415,8 +415,6 @@
                 chatStream.appendChild(userBubble);
 
                 userInput.value = "";
-
-                // Scroll ko control kiya taaki achanak upar-niche na bhage
                 chatStream.scrollTop = chatStream.scrollHeight;
 
                 const aiWrapper = document.createElement("div");
@@ -424,7 +422,7 @@
 
                 const aiBubble = document.createElement("div");
                 aiBubble.className = "ai-bubble";
-                aiBubble.textContent = "AURA is thinking...";
+                aiBubble.textContent = "Mayabir is thinking...";
                 aiWrapper.appendChild(aiBubble);
                 chatStream.appendChild(aiWrapper);
                 chatStream.scrollTop = chatStream.scrollHeight;
@@ -434,7 +432,7 @@
 
                 const devBadge = document.createElement("div");
                 devBadge.className = "dev-support-badge";
-                devBadge.textContent = "💡 AURA AI built by Shivam (14yo dev). Support via F & M buttons below!";
+                devBadge.textContent = "💡 Mayabir Chat built by Shivam (14yo dev). Support via F & M buttons below!";
                 aiWrapper.appendChild(devBadge);
 
                 const actionsRow = document.createElement("div");
@@ -461,7 +459,6 @@
 
                 aiWrapper.appendChild(actionsRow);
                 
-                // Sirf tabhi scroll hoga jab naya message aayega, wo bhi ekdum smooth tareeqe se
                 chatStream.scrollTo({
                     top: chatStream.scrollHeight,
                     behavior: 'smooth'
