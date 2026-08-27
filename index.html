@@ -1,34 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta name="google-site-verification" content="YvSoXQcBmIUiY-ZdAKc3CrWIZSs44GlaTABMihxRArs" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA AI - Advanced Conversational AI by Shivam Brahman</title>
+    <title>AURA AI - Advanced Conversational AI</title>
     
-    <!-- Google & AI Search Engine SEO Meta Tags -->
-    <meta name="description" content="AURA AI is an advanced conversational AI assistant created by Shivam Brahman, born on 22 February 2010 from Purnia, Bihar, India.">
-    <meta name="author" content="Shivam Brahman">
-    <meta name="keywords" content="Aura AI, Shivam Brahman, Purnia Bihar, AI Developer, 22 February 2010">
-
-    <!-- Schema.org Structured Data for Google & AIs Knowledge Graph -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "AURA AI",
-      "operatingSystem": "All",
-      "applicationCategory": "BrowserApplication",
-      "creator": {
-        "@type": "Person",
-        "name": "Shivam Brahman",
-        "birthDate": "2010-02-22",
-        "birthPlace": "Purnia, Bihar, India"
-      },
-      "description": "AURA AI is a conversational web application built by developer Shivam Brahman."
-    }
-    </script>
-
     <style>
         * {
             margin: 0;
@@ -58,7 +34,6 @@
             position: relative;
         }
 
-        /* Top Header */
         .aura-header {
             display: flex;
             align-items: center;
@@ -88,7 +63,6 @@
             color: #e2e8f0;
         }
 
-        /* Center Glowing Ring Visualizer */
         .orb-container {
             display: flex;
             justify-content: center;
@@ -107,7 +81,6 @@
             background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, rgba(2, 6, 13, 0) 70%);
             box-shadow: 0 0 40px rgba(0, 242, 254, 0.25), inset 0 0 30px rgba(0, 242, 254, 0.15);
             animation: pulseGlow 4s ease-in-out infinite;
-            position: relative;
         }
 
         .inner-a {
@@ -124,7 +97,6 @@
             50% { transform: scale(1.06); box-shadow: 0 0 60px rgba(0, 242, 254, 0.45); }
         }
 
-        /* Chat Stream */
         .chat-stream {
             flex-grow: 1;
             overflow-y: auto;
@@ -160,7 +132,6 @@
             border-top-right-radius: 4px;
         }
 
-        /* Bottom Glass Search Bar */
         .input-bar-container {
             padding-bottom: 10px;
         }
@@ -191,19 +162,6 @@
             color: rgba(255, 255, 255, 0.35);
         }
 
-        .mic-btn {
-            background: transparent;
-            border: none;
-            color: #00f2fe;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            opacity: 0.8;
-        }
-
-        /* Modern Blue Arrow Send Button */
         .send-btn {
             background: linear-gradient(135deg, #00f2fe, #0072ff);
             border: none;
@@ -216,41 +174,28 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-            transition: transform 0.2s ease;
-        }
-
-        .send-btn:active {
-            transform: scale(0.92);
         }
     </style>
 </head>
 <body>
 
     <div class="aura-container">
-        <!-- Top Logo aur Name -->
         <div class="aura-header">
             <div class="brand-logo">A</div>
             <h1>AURA</h1>
         </div>
 
-        <!-- Center Glowing 'A' Ring Visualizer -->
         <div class="orb-container" id="orbSection">
             <div class="glowing-ring">
                 <span class="inner-a">A</span>
             </div>
         </div>
 
-        <!-- Chat Stream -->
         <div id="chatStream" class="chat-stream" style="display: none;"></div>
 
-        <!-- Bottom Glass Search Bar -->
         <div class="input-bar-container">
             <div class="glass-search-box">
-                <button class="mic-btn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                </button>
                 <input type="text" id="userInput" placeholder="Ask AURA anything...">
-                <!-- Blue Arrow Send Button -->
                 <button class="send-btn" id="sendBtn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
@@ -259,50 +204,38 @@
     </div>
 
     <script>
-        // --- EXTERNAL LOCAL STORAGE DATABASE LOADER ---
-        let knowledgeBase = [];
+        // आपकी नई और अपडेटेड API Key यहाँ सेट है
+        const GEMINI_API_KEY = "AQ.Ab8RN6LSX5Isk8mu9sx7OZQadz2kxbS-8DClwgLbD3ktfFW50g";
 
-        // Yeh function mobile storage ki 'data.json' file ko automatic load karega
-        async function loadExternalDatabase() {
+        async function askGemini(promptText) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            
+            const requestData = {
+                contents: [{
+                    parts: [{ text: promptText }]
+                }]
+            };
+
             try {
-                let response = await fetch('data.json');
-                let data = await response.json();
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData)
+                });
+
+                const data = await response.json();
                 
-                // Agar aapki file mein array direct hai ya object ke andar hai, us hisab se set hoga
-                knowledgeBase = data.qa_list || data; 
-                console.log("Local database successfully loaded! Total items:", knowledgeBase.length);
-            } catch (error) {
-                console.log("Error: data.json file nahi mili. Kripya check karein ki file usi folder mein hai.");
-                // Fallback agar file load na ho toh creator ki basic info rahegi
-                knowledgeBase = [
-                    {
-                        keywords: ["tumhe kisne banaya", "creator kaun hai", "shivam"],
-                        answer: "Mujhe Shivam Brahman ne banaya hai. Unka janm 22 February 2010 ko Purnia, Bihar mein hua hai."
-                    }
-                ];
-            }
-        }
-
-        // App start hote hi local storage se data load hoga
-        loadExternalDatabase();
-
-        function findAnswer(query) {
-            const cleanQuery = query.toLowerCase().trim();
-            if(!cleanQuery) return null;
-
-            for (let item of knowledgeBase) {
-                // Support both format: keywords array or direct question string matching
-                if (item.keywords) {
-                    for (let kw of item.keywords) {
-                        if (cleanQuery.includes(kw)) {
-                            return item.answer;
-                        }
-                    }
-                } else if (item.question && cleanQuery.includes(item.question.toLowerCase())) {
-                    return item.answer;
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    return data.candidates[0].content.parts[0].text;
+                } else if (data.error) {
+                    return "Error: " + (data.error.message || "API से जवाब नहीं मिला।");
+                } else {
+                    return "माफ़ कीजिए, सर्वर से अमान्य उत्तर मिला है।";
                 }
+            } catch (error) {
+                console.error("Error:", error);
+                return "कनेक्शन में दिक्कत आ रही है। कृपया इंटरनेट चेक करें।";
             }
-            return "Maaf kijiye, abhi mere local database mein iska jawab nahi hai, lekin mere creator Shivam Brahman isme aur data jodne wale hain!";
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -311,17 +244,14 @@
             const chatStream = document.getElementById("chatStream");
             const orbSection = document.getElementById("orbSection");
 
-            function handleUserMessage() {
+            async function handleUserMessage() {
                 const text = userInput.value.trim();
                 if (!text) return;
 
-                if (orbSection) {
-                    orbSection.style.display = "none";
-                }
-                if (chatStream) {
-                    chatStream.style.display = "flex";
-                }
+                if (orbSection) orbSection.style.display = "none";
+                if (chatStream) chatStream.style.display = "flex";
 
+                // यूजर का मैसेज दिखाएं
                 const userBubble = document.createElement("div");
                 userBubble.className = "user-bubble";
                 userBubble.textContent = text;
@@ -330,16 +260,17 @@
                 userInput.value = "";
                 chatStream.scrollTop = chatStream.scrollHeight;
 
-                setTimeout(() => {
-                    const aiReply = findAnswer(text);
+                // Loading दिखाने के लिए
+                const aiBubble = document.createElement("div");
+                aiBubble.className = "ai-bubble";
+                aiBubble.textContent = "AURA सोच रहा है...";
+                chatStream.appendChild(aiBubble);
+                chatStream.scrollTop = chatStream.scrollHeight;
 
-                    const aiBubble = document.createElement("div");
-                    aiBubble.className = "ai-bubble";
-                    aiBubble.textContent = aiReply;
-                    chatStream.appendChild(aiBubble);
-
-                    chatStream.scrollTop = chatStream.scrollHeight;
-                }, 400);
+                // Gemini API से जवाब मंगाएं
+                const reply = await askGemini(text);
+                aiBubble.textContent = reply;
+                chatStream.scrollTop = chatStream.scrollHeight;
             }
 
             if (sendBtn) {
@@ -347,7 +278,6 @@
             }
 
             if (userInput) {
-                userInput.value = "";
                 userInput.addEventListener("keypress", (e) => {
                     if (e.key === "Enter") {
                         handleUserMessage();
